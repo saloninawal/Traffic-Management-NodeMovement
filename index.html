@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Signal Control</title>
+</head>
+<body>
+    <h1>Traffic Signal Control</h1>
+
+    <div>
+        <p>Current Signal State: <span id="signalState">Green</span></p>
+        <button id="changeSignal">Change Signal</button>
+    </div>
+    <script>
+    // JavaScript code to interact with the Node.js server
+
+    const signalStateElement = document.getElementById('signalState');
+    const changeSignalButton = document.getElementById('changeSignal');
+
+    // Connect to the server using WebSocket
+    const socket = io();
+
+    // Listen for updates to the signal state
+    socket.on('signal state', (state) => {
+        signalStateElement.innerText = state;
+    });
+
+    // Send a request to change the signal state
+    changeSignalButton.addEventListener('click', () => {
+        console.log('Change Signal button clicked'); // Add this line for debugging
+        const newSignalState = signalStateElement.innerText === 'Green' ? 'Red' : 'Green';
+        console.log('Requesting signal state change to', newSignalState); // Add this line for debugging
+        socket.emit('change signal', newSignalState);
+    });
+    </script>
+
+</body>
+</html>
